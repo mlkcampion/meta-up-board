@@ -68,13 +68,53 @@ Download the latest collection of layers for OE-core universe for Sumo:
 ```
 git clone -b sumo git://git.openembedded.org/meta-openembedded 
 ```
+Download meta-virtualization and openembedded-core for Docker containers:
+```
+git clone -b sumo git://git.yoctoproject.org/meta-virtualization
+```
+
+```
+git clone -b sumo git://git.openembedded.org/openembedded-core
+```
 
 Download this UP Board BSP layer for Sumo:
+
+NOTE:
+-----
+Due to an issue with Linux-Intel kernel for Cherry Trail SoCs,
+the layer must be separated for each kernel version:
+
+For UP board and UP Core (Cherry Trail SoCs):
+---------------------------------------------
+
 ```
-git clone -b sumo https://github.com/emutex/meta-up-board
+git clone -b sumo_linux-yocto https://github.com/emutex/meta-up-board
 ```
 
-From the poky directory, you can build an up-board image as such:
+Building your Yocto image for each UP machine
+=============================================
+
+UP Board:
+---------
+From the poky directory:
+
+```
+TEMPLATECONF=meta-up-board/conf source oe-init-build-env
+bitbake upboard-image-sato
+```
+
+UP Core Board:
+--------------
+From the meta-up-board directory:
+```
+sudo nano conf/machine/up-board.conf
+```
+Uncomment required file for up-core boards to enable all features:
+```
+require conf/machine/include/up-core.inc
+```
+
+Then, from the poky directory:
 
 ```
 TEMPLATECONF=meta-up-board/conf source oe-init-build-env
